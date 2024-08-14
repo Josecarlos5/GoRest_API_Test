@@ -1,0 +1,152 @@
+{
+    "info": {
+        "name": "GoRest API Tests",
+        "_postman_id": "12345-abcde-67890-fghij",
+        "description": "Collection for testing GoRest API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Create User",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Test User\",\n    \"gender\": \"male\",\n    \"email\": \"dsilvacouto@gmail.com\",\n    \"status\": \"active\"\n}"
+                },
+                "url": {
+                    "raw": "https://gorest.co.in/public/v2/users",
+                    "protocol": "https",
+                    "host": [
+                        "gorest",
+                        "co",
+                        "in"
+                    ],
+                    "path": [
+                        "public",
+                        "v2",
+                        "users"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "const response = pm.response.json();",
+                            "pm.environment.set(\"user_id\", response.id);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Get User",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://gorest.co.in/public/v2/users/{{user_id}}",
+                    "protocol": "https",
+                    "host": [
+                        "gorest",
+                        "co",
+                        "in"
+                    ],
+                    "path": [
+                        "public",
+                        "v2",
+                        "users",
+                        "{{user_id}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Check user email\", function () {",
+                            "    const response = pm.response.json();",
+                            "    pm.expect(response.email).to.eql(\"dsilvacouto@gmail.com\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Delete User",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://gorest.co.in/public/v2/users/{{user_id}}",
+                    "protocol": "https",
+                    "host": [
+                        "gorest",
+                        "co",
+                        "in"
+                    ],
+                    "path": [
+                        "public",
+                        "v2",
+                        "users",
+                        "{{user_id}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 204\", function () {",
+                            "    pm.response.to.have.status(204);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        }
+    ]
+}
